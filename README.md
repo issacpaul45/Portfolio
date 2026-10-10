@@ -1,6 +1,6 @@
 # Issac Paul — developer portfolio
 
-A full-stack portfolio built with React and Vite, a Django REST API, and PostgreSQL. The initial database migration seeds the experience and project entries from the resume; new contact form submissions are stored in PostgreSQL and visible in Django admin.
+A full-stack portfolio built with React and Vite, a Django REST API, and PostgreSQL. The initial database migration seeds the experience and project entries from the resume. The contact section links directly to email, GitHub, and LinkedIn.
 
 The supplied resume PDF is available as a download from the site navigation and About section.
 
@@ -40,6 +40,6 @@ Vite forwards `/api` requests to `http://localhost:8000` by default. Set `VITE_A
 ## API
 
 - `GET /api/portfolio/` — profile, projects, experience, and skill groups
-- `POST /api/contact/` — validates and saves `{ "name", "email", "message" }`; anonymous submissions are rate limited
+- `POST /api/contact/` — optional API endpoint that validates and stores `{ "name", "email", "message" }`; it is not used by the portfolio interface
 
-The interface includes fallback project and experience content so it still renders while the API is unavailable. The contact form requires the API and database to be running.
+The interface includes fallback project and experience content so it still renders while the API is unavailable.
