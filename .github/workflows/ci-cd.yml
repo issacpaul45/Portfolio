@@ -99,3 +99,23 @@ jobs:
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-backend:
+    name: Deploy Django API to Render
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render deploy for this commit
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "::error::Add the RENDER_DEPLOY_HOOK_URL repository secret before merging this workflow."
+            exit 1
+          fi
+
+          curl --fail --silent --show-error --get \
+            --data-urlencode "ref=$GITHUB_SHA" \
+            "$RENDER_DEPLOY_HOOK_URL"
