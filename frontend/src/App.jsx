@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
-  ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Check, Code2, Download,
-  Bot, Database, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu,
-  MessageSquareText, Server, Workflow, X,
+  ArrowDown, ArrowDownRight, ArrowUpRight, Code2, Download, Bot, Database,
+  Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu, Moon, Server,
+  Sun, Workflow, X,
 } from 'lucide-react'
 
 const fallback = {
@@ -97,9 +97,13 @@ function App() {
   const year = new Date().getFullYear()
   const [content, setContent] = useState(fallback)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [formState, setFormState] = useState('idle')
-  const [formError, setFormError] = useState('')
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('portfolio-theme') || 'dark'
+    } catch {
+      return 'dark'
+    }
+  })
 
   useEffect(() => {
     fetch('/api/portfolio/')
@@ -107,6 +111,15 @@ function App() {
       .then((data) => setContent({ projects: data.projects, experience: data.experience }))
       .catch(() => {})
   }, [])
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    try {
+      localStorage.setItem('portfolio-theme', theme)
+    } catch {
+      // The theme still works for this session when storage is unavailable.
+    }
+  }, [theme])
 
   useEffect(() => {
     const targets = document.querySelectorAll(
@@ -133,28 +146,6 @@ function App() {
   }, [content])
 
   const closeMenu = () => setMenuOpen(false)
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    setFormState('sending')
-    setFormError('')
-    try {
-      const response = await fetch('/api/contact/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
-      const result = await response.json()
-      if (!response.ok) {
-        const firstError = Object.values(result)[0]
-        throw new Error(Array.isArray(firstError) ? firstError[0] : 'Please check your details and try again.')
-      }
-      setFormState('sent')
-      setForm({ name: '', email: '', message: '' })
-    } catch (error) {
-      setFormState('error')
-      setFormError(error.message || 'The message could not be sent. Please email me instead.')
-    }
-  }
 
   return (
     <>
@@ -164,6 +155,7 @@ function App() {
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}>{menuOpen ? <X /> : <Menu />}</button>
         <nav className={menuOpen ? 'nav-open' : ''}>
           <a href="#work" onClick={closeMenu}>Work</a><a href="#about" onClick={closeMenu}>About</a><a href="#stack" onClick={closeMenu}>Stack</a><a className="nav-resume" href="/issac-paul-resume.pdf" download="Issac-Paul-Resume.pdf" onClick={closeMenu}>Resume <Download size={14} /></a>
+          <button className="theme-toggle" type="button" role="switch" aria-checked={theme === 'light'} aria-label="Light theme" title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><span className="theme-switch-track" aria-hidden="true"><span className="theme-switch-thumb">{theme === 'dark' ? <Moon size={11} /> : <Sun size={11} />}</span></span><span className="theme-toggle-label">{theme === 'dark' ? 'Dark' : 'Light'}</span></button>
           <a className="nav-contact" href="#contact" onClick={closeMenu}>Let’s talk <ArrowUpRight size={15} /></a>
         </nav>
       </header>
@@ -204,20 +196,11 @@ function App() {
         </section>
 
         <section className="contact-section" id="contact">
-          <div className="contact-inner section-wrap"><SectionLabel number="04">GET IN TOUCH</SectionLabel><div className="contact-grid"><div className="contact-copy"><span className="eyebrow">HAVE A PROJECT IN MIND?</span><h2>Let’s build<br />something <span>solid.</span></h2><p>Have a backend challenge, a role, or an interesting idea? I’d like to hear about it.</p><a className="contact-email" href="mailto:issacpaul45@gmail.com"><Mail size={17} /> issacpaul45@gmail.com <ArrowUpRight size={15} /></a><div className="social-links"><a className="social-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer"><Github size={17} /> GitHub <ArrowUpRight size={14} /></a><a className="social-link" href="https://www.linkedin.com/in/issac-paul-a85869190/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn <ArrowUpRight size={14} /></a></div></div>
-              <form className="contact-form" onSubmit={handleSubmit}>
-                <div className="form-heading"><MessageSquareText size={18} /><span>SEND A MESSAGE</span></div>
-                <label>Your name<input required maxLength="120" autoComplete="name" placeholder="What should I call you?" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
-                <label>Email address<input required type="email" autoComplete="email" placeholder="you@company.com" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></label>
-                <label>Your message<textarea required minLength="12" maxLength="4000" rows="3" placeholder="Tell me a little about it…" value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} /></label>
-                {formState === 'sent' ? <div className="form-success" aria-live="polite"><Check size={16} /> Thanks — your message has been sent.</div> : formState === 'error' ? <div className="form-error" role="alert">{formError}</div> : null}
-                <button type="submit" className="button button-primary form-submit" disabled={formState === 'sending'}>{formState === 'sending' ? 'Sending…' : 'Send message'} <ArrowRight size={16} /></button>
-              </form>
-            </div></div>
+          <div className="contact-inner section-wrap"><SectionLabel number="04">GET IN TOUCH</SectionLabel><div className="contact-grid contact-grid-simple"><div className="contact-copy"><span className="eyebrow">HAVE A PROJECT IN MIND?</span><h2>Let’s build<br />something <span>solid.</span></h2><p>Have a backend challenge, a role, or an interesting idea? I’d like to hear about it.</p><a className="button button-primary contact-email" href="mailto:issacpaul45@gmail.com"><Mail size={17} /> Email me <ArrowUpRight size={15} /></a><div className="social-links"><a className="social-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer"><Github size={17} /> GitHub <ArrowUpRight size={14} /></a><a className="social-link" href="https://www.linkedin.com/in/issac-paul-a85869190/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn <ArrowUpRight size={14} /></a></div></div></div></div>
         </section>
       </main>
 
-      <footer className="site-footer"><div className="section-wrap footer-inner"><a className="wordmark footer-wordmark" href="#home"><span className="wordmark-mark">ip<span>.</span></span></a><span>© {year} Issac Paul · React · Django · PostgreSQL</span><a href="#home" className="back-top">BACK TO TOP <ArrowUpRight size={13} /></a></div></footer>
+      <footer className="site-footer"><div className="section-wrap footer-inner"><a className="wordmark footer-wordmark" href="#home"><span className="wordmark-mark">ip<span>.</span></span></a><span>© {year} Issac Paul · Backend Developer · Ernakulam</span><a href="#home" className="back-top">BACK TO TOP <ArrowUpRight size={13} /></a></div></footer>
     </>
   )
 }
