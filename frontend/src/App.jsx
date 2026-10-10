@@ -106,7 +106,7 @@ function App() {
   })
 
   useEffect(() => {
-    fetch('/api/portfolio/')
+    fetch(import.meta.env.VITE_API_URL || '/api/portfolio/')
       .then((response) => response.ok ? response.json() : Promise.reject())
       .then((data) => setContent({ projects: data.projects, experience: data.experience }))
       .catch(() => {})
@@ -154,7 +154,7 @@ function App() {
         <a className="wordmark" href="#home" onClick={closeMenu} aria-label="Issac Paul home"><span className="wordmark-mark">ip<span>.</span></span><span className="wordmark-name">ISSAC PAUL</span></a>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}>{menuOpen ? <X /> : <Menu />}</button>
         <nav className={menuOpen ? 'nav-open' : ''}>
-          <a href="#work" onClick={closeMenu}>Work</a><a href="#about" onClick={closeMenu}>About</a><a href="#stack" onClick={closeMenu}>Stack</a><a className="nav-resume" href="/issac-paul-resume.pdf" download="Issac-Paul-Resume.pdf" onClick={closeMenu}>Resume <Download size={14} /></a>
+          <a href="#work" onClick={closeMenu}>Work</a><a href="#about" onClick={closeMenu}>About</a><a href="#stack" onClick={closeMenu}>Stack</a><a className="nav-resume" href={`${import.meta.env.BASE_URL}issac-paul-resume.pdf`} download="Issac-Paul-Resume.pdf" onClick={closeMenu}>Resume <Download size={14} /></a>
           <button className="theme-toggle" type="button" role="switch" aria-checked={theme === 'light'} aria-label="Light theme" title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><span className="theme-switch-track" aria-hidden="true"><span className="theme-switch-thumb">{theme === 'dark' ? <Moon size={11} /> : <Sun size={11} />}</span></span><span className="theme-toggle-label">{theme === 'dark' ? 'Dark' : 'Light'}</span></button>
           <a className="nav-contact" href="#contact" onClick={closeMenu}>Let’s talk <ArrowUpRight size={15} /></a>
         </nav>
@@ -182,7 +182,7 @@ function App() {
         <section className="about-section" id="about">
           <div className="about-inner section-wrap">
             <SectionLabel number="02">A LITTLE ABOUT ME</SectionLabel>
-            <div className="about-grid"><div className="about-lead"><h2>Make it work.<br /><span>Make it reliable.</span><br />Make it clear.</h2><p>Good backend work is often invisible. It’s the API that stays predictable, the queue that absorbs a spike, and the careful fix that keeps a production issue from coming back.</p><div className="about-links"><a className="text-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer">More on GitHub <ArrowUpRight size={15} /></a><a className="text-link" href="/issac-paul-resume.pdf" download="Issac-Paul-Resume.pdf">Download resume <Download size={15} /></a></div></div>
+            <div className="about-grid"><div className="about-lead"><h2>Make it work.<br /><span>Make it reliable.</span><br />Make it clear.</h2><p>Good backend work is often invisible. It’s the API that stays predictable, the queue that absorbs a spike, and the careful fix that keeps a production issue from coming back.</p><div className="about-links"><a className="text-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer">More on GitHub <ArrowUpRight size={15} /></a><a className="text-link" href={`${import.meta.env.BASE_URL}issac-paul-resume.pdf`} download="Issac-Paul-Resume.pdf">Download resume <Download size={15} /></a></div></div>
               <div className="timeline"><div className="timeline-heading"><span>EXPERIENCE</span><span className="mono">2024 — NOW</span></div>{content.experience.map((job, index) => <article className="timeline-item" key={job.id || job.company}><div className="timeline-marker"><span className={index === 0 ? 'marker-current' : ''} /></div><div className="timeline-content"><div className="timeline-meta"><span>{job.period}</span><span>{job.location}</span></div><h3>{job.role}</h3><div className="company-name">{job.company}</div><ul>{job.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul></div></article>)}<div className="education-row"><div className="education-icon"><GraduationCap size={16} /></div><div><span className="mono education-period">2023 · KOCHI, INDIA</span><h3>B.Tech, Computer Science Engineering</h3><p>TOC H Institute of Science and Technology · APJ Abdul Kalam Technological University</p></div></div></div>
             </div>
           </div>
