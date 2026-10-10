@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
   ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Check, Code2, Download,
-  Database, Github, GraduationCap, Layers3, Mail, Menu, MessageSquareText, Server,
-  Workflow, X,
+  Bot, Database, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu,
+  MessageSquareText, Server, Workflow, X,
 } from 'lucide-react'
 
 const fallback = {
@@ -62,6 +62,7 @@ const skillGroups = [
   { icon: Database, label: 'Data & queues', items: ['PostgreSQL', 'MySQL', 'SQLite', 'Celery', 'RabbitMQ', 'Background jobs'] },
   { icon: Layers3, label: 'Cloud & delivery', items: ['Docker', 'AWS S3', 'AWS SQS', 'Git & GitHub', 'Linux', 'Production debugging'] },
 ]
+const projectIcons = [MapPin, GraduationCap, Bot]
 
 function SectionLabel({ number, children }) {
   return <div className="section-label"><span>{number}</span><span>{children}</span><i /></div>
@@ -80,9 +81,10 @@ function FlowDiagram() {
 }
 
 function ProjectCard({ project, index }) {
+  const ProjectIcon = projectIcons[index] || Code2
   return (
     <article className={`project-card ${index === 0 ? 'project-featured' : ''}`}>
-      <div className="project-card-head"><span className="project-number">0{index + 1} / PROJECT</span><span className={`project-flag ${project.featured ? 'is-featured' : ''}`}>{project.featured ? 'FEATURED' : 'BUILD'}</span></div>
+      <div className="project-card-head"><div className="project-card-label"><span className="project-number">0{index + 1} / PROJECT</span><ProjectIcon className="project-card-icon" size={16} strokeWidth={1.7} /></div><span className={`project-flag ${project.featured ? 'is-featured' : ''}`}>{project.featured ? 'FEATURED' : 'BUILD'}</span></div>
       <h3>{project.title}</h3>
       <p className="project-summary">{project.summary}</p>
       <ul className="project-details">{project.details.map((item) => <li key={item}>{item}</li>)}</ul>
@@ -202,7 +204,7 @@ function App() {
         </section>
 
         <section className="contact-section" id="contact">
-          <div className="contact-inner section-wrap"><SectionLabel number="04">GET IN TOUCH</SectionLabel><div className="contact-grid"><div className="contact-copy"><span className="eyebrow">HAVE A PROJECT IN MIND?</span><h2>Let’s build<br />something <span>solid.</span></h2><p>Have a backend challenge, a role, or an interesting idea? I’d like to hear about it.</p><a className="contact-email" href="mailto:issacpaul45@gmail.com"><Mail size={17} /> issacpaul45@gmail.com <ArrowUpRight size={15} /></a><a className="github-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer"><Github size={17} /> github.com/issacpaul45 <ArrowUpRight size={14} /></a></div>
+          <div className="contact-inner section-wrap"><SectionLabel number="04">GET IN TOUCH</SectionLabel><div className="contact-grid"><div className="contact-copy"><span className="eyebrow">HAVE A PROJECT IN MIND?</span><h2>Let’s build<br />something <span>solid.</span></h2><p>Have a backend challenge, a role, or an interesting idea? I’d like to hear about it.</p><a className="contact-email" href="mailto:issacpaul45@gmail.com"><Mail size={17} /> issacpaul45@gmail.com <ArrowUpRight size={15} /></a><div className="social-links"><a className="social-link" href="https://github.com/issacpaul45" target="_blank" rel="noreferrer"><Github size={17} /> GitHub <ArrowUpRight size={14} /></a><a className="social-link" href="https://www.linkedin.com/in/issac-paul-a85869190/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn <ArrowUpRight size={14} /></a></div></div>
               <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="form-heading"><MessageSquareText size={18} /><span>SEND A MESSAGE</span></div>
                 <label>Your name<input required maxLength="120" autoComplete="name" placeholder="What should I call you?" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
