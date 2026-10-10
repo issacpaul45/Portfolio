@@ -44,3 +44,4 @@ html[data-theme="light"] .contact-email{color:#172015}html[data-theme="light"] .
 html[data-theme="light"] .button-primary{background:#b8e98b;color:#172015}
 .contact-email{color:#172015}
 .contact-email:hover{color:#172015}
+.theme-toggle{border:0;border-radius:0;padding:0;background:transparent}.theme-toggle:hover{border-color:transparent}.theme-toggle:focus-visible .theme-switch-track{outline:2px solid var(--green);outline-offset:3px}
