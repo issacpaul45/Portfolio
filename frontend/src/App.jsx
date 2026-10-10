@@ -200,7 +200,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="site-footer"><div className="section-wrap footer-inner"><a className="wordmark footer-wordmark" href="#home"><span className="wordmark-mark">ip<span>.</span></span></a><span>© {year} Issac Paul · React · Django · PostgreSQL</span><a href="#home" className="back-top">BACK TO TOP <ArrowUpRight size={13} /></a></div></footer>
+      <footer className="site-footer"><div className="section-wrap footer-inner"><a className="wordmark footer-wordmark" href="#home"><span className="wordmark-mark">ip<span>.</span></span></a><span>© {year} Issac Paul · Backend Developer · Ernakulam</span><a href="#home" className="back-top">BACK TO TOP <ArrowUpRight size={13} /></a></div></footer>
     </>
   )
 }
